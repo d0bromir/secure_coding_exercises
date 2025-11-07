@@ -1,0 +1,100 @@
+# Ignore virtual environments
+
+.venv/
+env/
+venv/
+
+# Python compiled files
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# IDE и временни файлове
+
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Тестови и временни директории
+
+pytest_cache/
+.cache/
+coverage/
+*.cover
+*.log
+
+# Temporary и OS файлове
+
+.DS_Store
+Thumbs.db
+*.orig
+*.rej
+
+# Build / distribution артефакти
+
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Flask / временно съдържание
+
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Секрети и ключове (не качвай в git)
+
+*.pem
+*.pfx
+*.crt
+*.key
+*.cer
+*.enc
+*.der
+*.json.secret
+secrets.json
+config.local.json
+
+# Локални инструменти и резултати от тестове
+
+tools/**pycache**/
+tests/**pycache**/
+results/
+output/
+tmp/
+*.zip
+
+# Windows специфични
+
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# PyCharm, Visual Studio Code и JetBrains метаданни
+
+.idea/
+.vscode/
+*.iws
+*.ipr
+*.iml
+*.sln
+*.user
+*.vs/
+
+# Coverage reports
+
+htmlcov/
+.coverage
+.coverage.*
+
+# Logs и отчети
+
+*.log
+logs/

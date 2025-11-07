@@ -1,0 +1,2 @@
+# This file sholud be in the root of the project, but here for the test
+flask==0.12.5

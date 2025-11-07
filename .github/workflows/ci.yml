@@ -1,0 +1,59 @@
+name: CI - Tests (Linux)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.14']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Ensure build tools (for task9/gcc)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends build-essential
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Run pytest (JUnit + coverage)
+        run: |
+          mkdir -p reports
+          pytest -q -continue-on-collection-errors \
+            --junitxml=reports/junit.xml \
+            --cov=. --cov-report=term-missing \
+            --cov-report=xml:reports/coverage.xml
+
+      - name: Print test stats
+        run: |
+          python - << 'PY'
+          import xml.etree.ElementTree as ET
+          p = 'reports/junit.xml'
+          root = ET.parse(p).getroot()
+
+          total=fail=err=skip=0
+          for ts in root.iter('testsuite'):
+              total += int(ts.attrib.get('tests', 0))
+              fail  += int(ts.attrib.get('failures', 0))
+              err   += int(ts.attrib.get('errors', 0))
+              skip  += int(ts.attrib.get('skipped', 0))
+          passed = total - fail - err - skip
+          print(f"TEST SUMMARY: total={total}, passed={passed}, failed={fail}, errors={err}, skipped={skip}")
+          PY
